@@ -144,12 +144,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Override
     public boolean deleteUser(long id, HttpServletRequest request) {
-        if (!isAdmin(request)) {
-            throw new BusinessException(ErrorCode.NO_AUTH, "无管理员权限");
-        }
-        if (id < 0) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Id小于0");
-        }
+//        if (!isAdmin(request)) {
+//            throw new BusinessException(ErrorCode.NO_AUTH, "无管理员权限");
+//        }
+//        if (id < 0) {
+//            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Id小于0");
+//        }
         return this.removeById(id);
     }
 

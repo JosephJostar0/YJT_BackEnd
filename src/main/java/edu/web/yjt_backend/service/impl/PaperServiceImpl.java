@@ -80,7 +80,7 @@ public class PaperServiceImpl extends ServiceImpl<PaperMapper, Paper>
     public boolean delPaper(long pid, long uid) {
         Paper paper = this.getById(pid);
         User user = userService.getById(uid);
-        if (user.getUserRole() != 1 && !user.getId().equals(paper.getAuthor())) {
+        if (!user.getUserRole().equals(1) && !user.getId().equals(paper.getAuthor())) {
             throw new BusinessException(ErrorCode.NO_AUTH, "您无权删除该试卷，仅管理员和试卷所有者可删除");
         }
         return this.removeById(pid);

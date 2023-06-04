@@ -11,5 +11,6 @@ public class AddPaperRequest implements Serializable {
     private String name;
     private String description;
     private List<Long> questions;
+    private long userId;
     private byte isPublic;
 }

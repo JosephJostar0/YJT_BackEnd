@@ -29,7 +29,7 @@ import static edu.web.yjt_backend.constant.UserConstant.USER_LOGIN_STATE;
 
 @RestController
 @RequestMapping("/paper")
-@CrossOrigin(origins = {"http://localhost:8000"}, allowCredentials = "true")
+@CrossOrigin(origins = "*")
 public class paperController {
     @Resource
     private PaperService paperService;
@@ -55,15 +55,16 @@ public class paperController {
 
     @PostMapping("/addPaper")
     public BaseRespone<Long> addPaper(@RequestBody AddPaperRequest addPaperRequest, HttpServletRequest request) {
-        Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
-        User currentUser = (User) userObj;
+//        Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
+//        User currentUser = (User) userObj;
+//        long author = currentUser.getId();
         if (addPaperRequest == null) {
             return ResultUtils.error(ErrorCode.NULL_ERROR, "增加试卷请求为空");
         }
         String name = addPaperRequest.getName();
         String des = addPaperRequest.getDescription();
         List<Long> ques = addPaperRequest.getQuestions();
-        long author = currentUser.getId();
+        long author = addPaperRequest.getUserId();
         byte isPub = addPaperRequest.getIsPublic();
 
         if (ques.isEmpty()) {
@@ -75,13 +76,14 @@ public class paperController {
 
     @PostMapping("/delPaper")
     public BaseRespone<Long> delPaper(@RequestBody DelPaperRequest delPaperRequest, HttpServletRequest request) {
-        Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
-        User currentUser = (User) userObj;
+//        Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
+//        User currentUser = (User) userObj;
+//        long uid = currentUser.getId();
         if (delPaperRequest == null) {
-            return ResultUtils.error(ErrorCode.NULL_ERROR, "增加试卷请求为空");
+            return ResultUtils.error(ErrorCode.NULL_ERROR, "删除试卷请求为空");
         }
         long paperId = delPaperRequest.getPaperId();
-        long uid = currentUser.getId();
+        long uid = delPaperRequest.getUserId();
         if (!paperService.delPaper(paperId, uid)) {
             return ResultUtils.error(ErrorCode.SYSTEM_ERROR, "删除失败");
         }

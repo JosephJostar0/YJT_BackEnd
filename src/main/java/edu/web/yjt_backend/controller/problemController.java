@@ -6,6 +6,7 @@ import edu.web.yjt_backend.common.ResultUtils;
 import edu.web.yjt_backend.exception.BusinessException;
 import edu.web.yjt_backend.model.domain.Problem;
 import edu.web.yjt_backend.model.domain.request.AddProblemRequest;
+import edu.web.yjt_backend.model.domain.request.DelProblemRequest;
 import edu.web.yjt_backend.model.domain.request.GetProblemRequest;
 import edu.web.yjt_backend.model.domain.request.PageProblemRequest;
 import edu.web.yjt_backend.model.domain.response.PagePaperResponse;
@@ -22,7 +23,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/problem")
 //下面这个允许跨域的前端ip需要具体改
-@CrossOrigin(origins = {"http://localhost:8000"}, allowCredentials = "true")
+@CrossOrigin(origins = "*")
 public class problemController {
     @Resource
     private ProblemService problemService;
@@ -83,8 +84,8 @@ public class problemController {
 
 
     @PostMapping("/deleteProblem")
-    public BaseRespone<Boolean> deleteProblem(@RequestBody long id, HttpServletRequest request) {
-        Boolean result = problemService.deleteProblem(id, request);
+    public BaseRespone<Boolean> deleteProblem(@RequestBody DelProblemRequest delProblemRequest, HttpServletRequest request) {
+        Boolean result = problemService.deleteProblem(delProblemRequest.getProblemId(), request);
         return ResultUtils.success(result);
     }
 }

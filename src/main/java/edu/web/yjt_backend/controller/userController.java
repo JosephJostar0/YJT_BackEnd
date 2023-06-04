@@ -8,6 +8,8 @@ import edu.web.yjt_backend.common.ErrorCode;
 import edu.web.yjt_backend.common.ResultUtils;
 import edu.web.yjt_backend.exception.BusinessException;
 import edu.web.yjt_backend.model.domain.User;
+import edu.web.yjt_backend.model.domain.request.DelProblemRequest;
+import edu.web.yjt_backend.model.domain.request.DelUserRequest;
 import edu.web.yjt_backend.model.domain.request.UserLoginRequest;
 import edu.web.yjt_backend.model.domain.request.UserRegisterRequest;
 import edu.web.yjt_backend.service.UserService;
@@ -23,7 +25,7 @@ import static edu.web.yjt_backend.constant.UserConstant.USER_LOGIN_STATE;
 @RestController
 @RequestMapping("/user")
 //下面这个允许跨域的前端ip需要具体改
-@CrossOrigin(origins = {"http://localhost:8000"}, allowCredentials = "true")
+@CrossOrigin(origins = "*")
 public class userController {
     @Resource
     private UserService userService;
@@ -89,21 +91,22 @@ public class userController {
 
 
     @PostMapping("/delete")
-    public BaseRespone<Boolean> userDelete(@RequestBody long id, HttpServletRequest request) {
+    public BaseRespone<Boolean> userDelete(@RequestBody DelUserRequest delProblemRequest, HttpServletRequest request) {
+        long id = delProblemRequest.getId();
         Boolean result = userService.deleteUser(id, request);
         return ResultUtils.success(result);
     }
 
     @PostMapping("/getAllUser")
     public BaseRespone<List<User>> getAllUser(HttpServletRequest request) {
-        Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
-        User currentUser = (User) userObj;
-        if (currentUser == null) {
-            throw new BusinessException(ErrorCode.NOT_LOGIN, "用户未登录");
-        }
-        if (!userService.isAdmin(request)) {
-            throw new BusinessException(ErrorCode.NO_AUTH, "非管理员用户无权查看其他用户的信息");
-        }
+//        Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
+//        User currentUser = (User) userObj;
+//        if (currentUser == null) {
+//            throw new BusinessException(ErrorCode.NOT_LOGIN, "用户未登录");
+//        }
+//        if (!userService.isAdmin(request)) {
+//            throw new BusinessException(ErrorCode.NO_AUTH, "非管理员用户无权查看其他用户的信息");
+//        }
         return ResultUtils.success(userService.getAllUser());
     }
 }
